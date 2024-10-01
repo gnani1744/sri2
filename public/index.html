@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Satya Eye Care and Opticals</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Sri Satya Eye Care and Opticals</h1>
+        <div id="loginSection" class="card mx-auto" style="max-width: 400px;">
+            <div class="card-body">
+                <h2 class="card-title text-center">Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="patientFormSection" class="card mx-auto" style="max-width: 800px; display: none;">
+            <div class="card-body">
+                <h2 class="card-title text-center">Enter Patient Details</h2>
+                <form id="patientForm">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="male" name="gender" value="Male">
+                            <label class="form-check-label" for="male">Male</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="female" name="gender" value="Female">
+                            <label class="form-check-label" for="female">Female</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateOfExam">Date of Exam:</label>
+                        <input type="date" class="form-control" id="dateOfExam" name="dateOfExam" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" class="form-control" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mrno">MR No:</label>
+                        <input type="text" class="form-control" id="mrno" name="mrno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" class="form-control" id="age" name="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="chiefComplaint">Chief Complaint:</label>
+                        <input type="text" class="form-control" id="chiefComplaint" name="chiefComplaint" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="powerRightEye">Power of Right Eye:</label>
+                        <input type="text" class="form-control" id="powerRightEye" name="powerRightEye" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="powerLeftEye">Power of Left Eye:</label>
+                        <input type="text" class="form-control" id="powerLeftEye" name="powerLeftEye" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addPower">Add Power:</label>
+                        <input type="text" class="form-control" id="addPower" name="addPower" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="diagnosis">Diagnosis:</label>
+                        <input type="text" class="form-control" id="diagnosis" name="diagnosis" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'gnani' && password === 'Gnani@1744') {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('patientFormSection').style.display = 'block';
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+
+        document.getElementById('patientForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('/api/patients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                window.print(); // Print the receipt
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
